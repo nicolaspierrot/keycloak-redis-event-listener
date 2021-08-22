@@ -4,26 +4,19 @@ import org.keycloak.events.Event;
 import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.admin.AdminEvent;
 
-import org.jboss.logging.Logger;
-import org.keycloak.events.admin.ResourceType;
 import org.keycloak.models.KeycloakSession;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 public class RedisEventPublisherProvider implements EventListenerProvider {
-
-    private static final Logger LOG = Logger.getLogger(RedisEventPublisherProvider.class);
     private final KeycloakSession session;
     private final RedisPublisher publisher;
-    private String topicName;
 
-    public RedisEventPublisherProvider(KeycloakSession session, String redisHost, int redisPort, String topicName) {
+    public RedisEventPublisherProvider(KeycloakSession session, String redisHost, int redisPort) {
         this.session = session;
         this.publisher = new RedisPublisher(redisHost, redisPort);
-        this.topicName = topicName;
     }
 
     @Override
