@@ -1,1 +1,1 @@
-fr.bab.keycloak.provider.RedisEventListenerProviderFactory
+fr.bab.keycloak.provider.RedisEventPublisherProviderFactory
