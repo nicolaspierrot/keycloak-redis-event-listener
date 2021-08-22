@@ -18,7 +18,7 @@ public class RedisEventPublisherProviderFactory implements EventListenerProvider
 
     @Override
     public void init(Config.Scope scope) {
-        this.redisHost = scope.get("redisHost", "172.17.0.2");
+        this.redisHost = scope.get("redisHost", "localhost");
         this.redisPort = Integer.parseInt(scope.get("redisPort", "6379"));
     }
 
