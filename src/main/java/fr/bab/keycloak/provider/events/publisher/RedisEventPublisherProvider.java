@@ -1,5 +1,6 @@
-package fr.bab.keycloak.provider;
+package fr.bab.keycloak.provider.events.publisher;
 
+import fr.bab.keycloak.provider.events.publisher.redis.RedisPublisher;
 import org.keycloak.events.Event;
 import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.admin.AdminEvent;
@@ -12,11 +13,19 @@ import java.util.Locale;
 
 public class RedisEventPublisherProvider implements EventListenerProvider {
     private final KeycloakSession session;
-    private final RedisPublisher publisher;
+    private IPublisher publisher = null;
 
-    public RedisEventPublisherProvider(KeycloakSession session, String redisHost, int redisPort) {
+    public RedisEventPublisherProvider(KeycloakSession session, String pubSubType, String redisHost, int redisPort) {
         this.session = session;
-        this.publisher = new RedisPublisher(redisHost, redisPort);
+
+        switch(pubSubType) {
+            case "redis":
+                this.publisher = new RedisPublisher();
+                break;
+        }
+        if(this.publisher == null) {
+            throw new RuntimeException(pubSubType + " publisher not implemented");
+        }
     }
 
     @Override
