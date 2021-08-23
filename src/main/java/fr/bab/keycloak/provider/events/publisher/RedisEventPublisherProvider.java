@@ -5,8 +5,6 @@ import org.keycloak.events.Event;
 import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.admin.AdminEvent;
 
-import org.keycloak.models.KeycloakSession;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -16,11 +14,10 @@ public class RedisEventPublisherProvider implements EventListenerProvider {
 
     public RedisEventPublisherProvider(String pubSubType, String redisHost, int redisPort) {
         
-        switch(pubSubType) {
-            case "redis":
-                this.publisher = new RedisPublisher();
-                break;
+        if("redis".equals(pubSubType)) {
+            this.publisher = new RedisPublisher();
         }
+        
         if(this.publisher == null) {
             throw new RuntimeException(pubSubType + " publisher not found");
         }

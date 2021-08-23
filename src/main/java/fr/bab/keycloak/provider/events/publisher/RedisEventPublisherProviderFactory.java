@@ -8,9 +8,6 @@ import org.keycloak.models.*;
 public class RedisEventPublisherProviderFactory implements EventListenerProviderFactory {
 
     public static final String PROVIDER_ID = "redis-event-publisher";
-    private String pubsubType;
-    private String pubsubHost;
-    private int pubsubPort;
     private RedisEventPublisherProvider eventPublisher;
 
     @Override
@@ -20,10 +17,10 @@ public class RedisEventPublisherProviderFactory implements EventListenerProvider
 
     @Override
     public void init(Config.Scope scope) {
-        this.pubsubType = scope.get("serverType");
-        this.pubsubHost = scope.get("serverHost");
-        this.pubsubPort = scope.getInt("serverPort");
-        this.eventPublisher = new RedisEventPublisherProvider(this.pubsubType, this.pubsubHost, this.pubsubPort);
+        String pubsubType = scope.get("serverType");
+        String pubsubHost = scope.get("serverHost");
+        int pubsubPort = scope.getInt("serverPort");
+        this.eventPublisher = new RedisEventPublisherProvider(pubsubType, pubsubHost, pubsubPort);
     }
 
     @Override

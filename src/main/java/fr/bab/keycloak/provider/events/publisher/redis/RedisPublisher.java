@@ -1,6 +1,5 @@
 package fr.bab.keycloak.provider.events.publisher.redis;
 
-import java.net.URI;
 import redis.clients.jedis.Jedis;
 import fr.bab.keycloak.provider.events.publisher.IPublisher;
 
