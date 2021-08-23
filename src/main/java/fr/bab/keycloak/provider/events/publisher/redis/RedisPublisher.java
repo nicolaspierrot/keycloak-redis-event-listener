@@ -1,21 +1,17 @@
 package fr.bab.keycloak.provider.events.publisher.redis;
 
-import fr.bab.keycloak.provider.events.publisher.IPublisher;
-import redis.clients.jedis.Jedis;
-
-import java.net.ConnectException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
+import redis.clients.jedis.Jedis;
+import fr.bab.keycloak.provider.events.publisher.IPublisher;
+
 
 public class RedisPublisher implements IPublisher {
-    private static Jedis jedis;
+    private Jedis jedis;
 
     @Override
     public void init(String hostname, int port) {
         try {
-            URI uri = new URI(hostname);
-            jedis = new Jedis(uri, port);
+            jedis = new Jedis(hostname, port);
         } catch (Exception e) {
             e.printStackTrace();
         }

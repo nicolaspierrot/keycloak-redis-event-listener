@@ -7,21 +7,23 @@ import org.keycloak.models.*;
 
 public class RedisEventPublisherProviderFactory implements EventListenerProviderFactory {
 
-    public static final String PROVIDER_ID = "redis_event_publisher";
+    public static final String PROVIDER_ID = "redis-event-publisher";
     private String pubsubType;
     private String pubsubHost;
     private int pubsubPort;
+    private RedisEventPublisherProvider eventPublisher;
 
     @Override
     public EventListenerProvider create(KeycloakSession keycloakSession) {
-        return new RedisEventPublisherProvider(keycloakSession, pubsubType, pubsubHost, pubsubPort);
+        return this.eventPublisher; 
     }
 
     @Override
     public void init(Config.Scope scope) {
-        this.pubsubType = scope.get("pubsubType", "redis");
-        this.pubsubHost = scope.get("pubsubHost", "localhost");
-        this.pubsubPort = Integer.parseInt(scope.get("pubsubPort", "6379"));
+        this.pubsubType = scope.get("serverType");
+        this.pubsubHost = scope.get("serverHost");
+        this.pubsubPort = scope.getInt("serverPort");
+        this.eventPublisher = new RedisEventPublisherProvider(this.pubsubType, this.pubsubHost, this.pubsubPort);
     }
 
     @Override

@@ -12,20 +12,19 @@ import java.util.List;
 import java.util.Locale;
 
 public class RedisEventPublisherProvider implements EventListenerProvider {
-    private final KeycloakSession session;
     private IPublisher publisher = null;
 
-    public RedisEventPublisherProvider(KeycloakSession session, String pubSubType, String redisHost, int redisPort) {
-        this.session = session;
-
+    public RedisEventPublisherProvider(String pubSubType, String redisHost, int redisPort) {
+        
         switch(pubSubType) {
             case "redis":
                 this.publisher = new RedisPublisher();
                 break;
         }
         if(this.publisher == null) {
-            throw new RuntimeException(pubSubType + " publisher not implemented");
+            throw new RuntimeException(pubSubType + " publisher not found");
         }
+        this.publisher.init(redisHost, redisPort);
     }
 
     @Override
@@ -35,7 +34,8 @@ public class RedisEventPublisherProvider implements EventListenerProvider {
     @Override
     public void onEvent(AdminEvent adminEvent, boolean b) {
         String payload = adminEvent.getRepresentation();
-        this.publisher.publish(this.buildTopic(adminEvent), payload);
+        this.publisher.publish(this.buildTopic(adminEvent), payload != null ? payload : "");
+
     }
 
     private String buildTopic(AdminEvent event) {
